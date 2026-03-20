@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IoT Dashboard</title>
+  <meta name="author" content="Max Manning">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <header>
+    <h1>Device Dashboard</h1>
+  </header>
+
+  <div class="parent">
+
+    <div class="card div1">
+      <h2>Connection Status</h2>
+      <p>Status: 
+        <span id="connectionStatus" class="status disconnected">
+          Disconnected
+        </span>
+      </p>
+    </div>
+
+    <div class="card div2">
+      <h2>LED Patterns</h2>
+      <button onclick="">Blink</button>
+      <button onclick="">Chase</button>
+      <button onclick="">Ease</button>
+      <button onclick="">Rainbow</button>
+      <button onclick="">Flame</button>
+      <button onclick="">Binary</button>
+      <button onclick="">Auto</button>
+    </div>
+
+    <div class="card graph div3">
+      <h2>Temperature Data</h2>
+      <canvas id="temperatureChart"></canvas>
+      <script src="{{ url_for('static', filename='js/temperature-graph.js') }}"></script>
+    </div>
+
+    <div class="card graph div4">
+      <h2>Second Graph (e.g. Humidity)</h2>
+      <canvas id="secondChart"></canvas>
+    </div>
+
+  </div>
+</body>
+
+</html>
