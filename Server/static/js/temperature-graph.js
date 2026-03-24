@@ -23,6 +23,11 @@ async function fetchData() {
                     y: {
                         beginAtZero: true
                     }
+                },
+                animation: {
+                    onComplete: function () {
+                    showContent();
+                    }
                 }
             }
         });
@@ -31,6 +36,11 @@ async function fetchData() {
         chart.data.datasets[0].data = values;
         chart.update();
     }
+}
+
+function showContent() {
+    document.getElementById("loadingSpinner").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
 }
 
 setInterval(fetchData, 2000);

@@ -5,7 +5,7 @@ from flask import Flask, jsonify, render_template, request
 app = Flask(__name__)
 
 ## GLOBAL #################################################
-MAX_SENSOR_STORAGE = 25
+MAX_SENSOR_STORAGE = 50
 sensor_history = []
 
 ## DASHBOARD ##############################################
