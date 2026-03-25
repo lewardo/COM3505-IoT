@@ -6,7 +6,11 @@ app = Flask(__name__)
 
 ## GLOBAL #################################################
 MAX_SENSOR_STORAGE = 50
+VALID_MODES = {'blink', 'linear', 'ease in', 'ease out', 'ease in out', 'rainbow', 'flame', 'binary'}
+LED_COUNT = 6 #update when breadboard is laid out
+
 sensor_history = []
+led_mode = "blink"
 
 ## DASHBOARD ##############################################
 @app.route("/")
@@ -21,8 +25,25 @@ def receive_data():
     if len(sensor_history) > MAX_SENSOR_STORAGE:
         sensor_history.pop(0)
 
-    return "OK"
+    return led_mode
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify(sensor_history)
+
+@app.route('/api/led/<mode>', methods=['POST'])
+def set_led_command(mode):
+    global led_mode
+
+    if mode in VALID_MODES:
+        led_mode = mode
+        return 'Ok'
+    else:
+        try:
+            # auto led mode will take an int as a binary representation
+            mode = int(mode)
+            if mode >= 0 and mode <= 2**LED_COUNT:
+                led_mode = str(mode)
+                return 'Ok'
+        finally:
+            return 'Error'
