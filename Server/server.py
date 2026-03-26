@@ -6,12 +6,16 @@ app = Flask(__name__)
 
 ## GLOBAL #################################################
 MAX_SENSOR_STORAGE = 50
-VALID_MODES = {'blink', 'linear', 'ease in', 'ease out', 'ease in out', 'rainbow', 'flame', 'binary'}
-LED_COUNT = 6 #update when breadboard is laid out
-
 sensor_history = []
 sensor_index = 0
-led_mode = "blink"
+
+VALID_MODES = {'b', 'l', 'i', 'o', 'x', 'r', 'f', 'c', 't', 'm'}
+# {blink, linear, ease in, ease out, 'ease in out', 'rainbow', 'flame', 'binary', 'temperature', 'manual'}
+
+LED_COUNT = 6 # update when breadboard is laid out
+led_mode = "b"
+led_delay = 500
+manual_pattern = 0
 
 ## DASHBOARD ##############################################
 @app.route("/")
@@ -33,25 +37,23 @@ def receive_data():
 
     sensor_index += 1
 
-    return led_mode
+    return led_mode + ";" + str(manual_pattern) + ";" + str(led_delay)
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
     return jsonify(sensor_history)
 
-@app.route('/api/led/<mode>', methods=['POST'])
-def set_led_command(mode):
-    global led_mode
+@app.route('/api/led/', methods=['POST'])
+def set_led_command():
+    global led_mode, led_delay
+
+    data = request.json
+    mode = data['mode']
+    delay = int(data['delay'])
 
     if mode in VALID_MODES:
         led_mode = mode
+        led_delay = delay
         return 'Ok'
     else:
-        try:
-            # auto led mode will take an int as a binary representation
-            mode = int(mode)
-            if mode >= 0 and mode <= 2**LED_COUNT:
-                led_mode = str(mode)
-                return 'Ok'
-        finally:
-            return 'Error'
+        return 'Error'

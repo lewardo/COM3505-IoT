@@ -51,9 +51,9 @@ async function fetchData() {
     }
 }
 
+setInterval(fetchData, 2000);
+
 function showContent() {
     document.getElementById("loadingSpinner").style.display = "none";
     document.getElementById("mainContent").style.display = "block";
 }
-
-setInterval(fetchData, 2000);

@@ -13,57 +13,23 @@
 </head>
 
 <body class="bg-light">
-  <header class="bg-dark text-white text-center py-3 mb-4">
-    <h1 class="my-0">Device Dashboard</h1>
+  <header class="bg-dark text-white mb-3">
+    <div class="container d-flex justify-content-between align-items-center py-2">
+      <h1 class="m-0">Device Dashboard</h1>
+
+      <div>
+        <span class="me-2">Status:</span>
+        <span id="connectionStatus" class="badge bg-danger">
+          Disconnected
+        </span>
+      </div>
+    </div>
   </header>
-
+  
   <div class="container">
-    <div class="row g-4">
-
-      <!-- Connection Status -->
-      <div class="col-md-4">
-        <div class="card p-3">
-          <h2 class="h5">Connection Status</h2>
-          <p>Status:
-            <span id="connectionStatus" class="badge bg-danger">
-              Disconnected
-            </span>
-          </p>
-        </div>
-      </div>
-
-      <!-- LED Patterns -->
-      <div class="col-md-8">
-        <div class="card p-3">
-          <h2 class="h5">LED Patterns</h2>
-          <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-primary" onclick="setLEDMode('blink')">Blink</button>
-            <div class="btn-group">
-              <button type="button" class="btn btn-success" onclick="setLEDMode('linear')">Chase</button>
-              <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" >
-                <span class="visually-hidden">Toggle Dropdown</span>
-              </button>
-              <ul class="dropdown-menu">
-                
-                <li><h6 class="dropdown-header">Easing Function</h6></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><button class="dropdown-item" onclick="setLEDMode('linear')">Linear</button></li>
-                <li><button class="dropdown-item" onclick="setLEDMode('ease in')">Ease in</button></li>
-                <li><button class="dropdown-item" onclick="setLEDMode('ease out')">Ease out</button></li>
-                <li><button class="dropdown-item" onclick="setLEDMode('ease in out')">Ease in & out</button></li>
-              </ul>
-            </div>
-            <button class="btn btn-warning" onclick="setLEDMode('rainbow')">Rainbow</button>
-            <button class="btn btn-danger" onclick="setLEDMode('flame')">Flame</button>
-            <button class="btn btn-dark" onclick="setLEDMode('binary')">Binary</button>
-            <button class="btn btn-secondary" onclick="setLEDMode('temp')">Temperature</button>
-            <button class="btn btn-outline-secondary" onclick="">Auto</button>
-          </div>
-        </div>
-      </div>
-
+    <div class="row g-2">
       <!-- Temperature Graph -->
-      <div class="col-md-6">
+      <div class="col-lg-6">
         <div class="card p-3 h-100">
           <h2 class="h5">Temperature Data</h2>
           <p id="currentTemp">No Temperature Data</p>
@@ -72,21 +38,49 @@
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
-
+  
           <div id="mainContent" style="display: none;">
             <canvas id="temperatureChart" class="h-100 w-100 bg-white"></canvas>
           </div>
         </div>
       </div>
-
-      <!-- Second Graph -->
-      <div class="col-md-6">
-        <div class="card p-3 h-100">
-          <h2 class="h5">Second Graph (e.g. Humidity)</h2>
-          <canvas id="secondChart"></canvas>
+  
+      <!-- LED Patterns -->
+      <div class="col-lg-6">
+        <div class="card p-3">
+          <h2 class="h5">LED Patterns</h2>
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2"></div>
+            <div class="row">
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-primary" onclick="setLEDMode('b')">Blink</button>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-success" onclick="setLEDMode('l')">Chase</button>
+                  <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><h6 class="dropdown-header">Easing Function</h6></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item" onclick="setLEDMode('l')">Linear</button></li>
+                    <li><button class="dropdown-item" onclick="setLEDMode('i')">Ease in</button></li>
+                    <li><button class="dropdown-item" onclick="setLEDMode('o')">Ease out</button></li>
+                    <li><button class="dropdown-item" onclick="setLEDMode('x')">Ease in & out</button></li>
+                  </ul>
+                </div>
+                <button class="btn btn-warning" onclick="setLEDMode('r')">Rainbow</button>
+                <button class="btn btn-danger" onclick="setLEDMode('f')">Flame</button>
+                <button class="btn btn-dark" onclick="setLEDMode('c')">Binary</button>
+                <button class="btn btn-secondary" onclick="setLEDMode('t')">Temperature</button>
+                <button class="btn btn-outline-secondary" onclick="customLEDMode()">Auto</button>
+              </div>
+              <div class="col">
+                <label for="delay"  id="delayValue" class="form-label pt-1 m-2">Delay: 500</label>
+                <input type="range" class="form-range" min="100" max="1000" value="500" id="delay" style="padding:1em">
+              </div>   
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 
