@@ -14,6 +14,12 @@ async function setLEDMode(new_mode) {
   });
   mode = new_mode;
   console.log("Set to: " + mode + ";0;" + delay);
+
+  if (mode == 't' || mode == 'm') {
+    document.getElementById('delay').disabled = true;
+  } else {
+    document.getElementById('delay').removeAttribute('disabled');
+  }
 }
 
 const rangeInput = document.getElementById('delay');
