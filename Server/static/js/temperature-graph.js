@@ -4,8 +4,9 @@ async function fetchData() {
     const response = await fetch('/api/data');
     const data = await response.json();
 
-    const labels = data.map((_, i) => i);
-    const values = data.map(d => d.temperature);
+    const filtered = data.filter(d => d.temperature !== undefined);
+    const values = filtered.map(d => d.temperature);
+    const labels = filtered.map(d => d.label);
 
     if (!chart) {
         const ctx = document.getElementById('temperatureChart');
@@ -35,6 +36,18 @@ async function fetchData() {
         chart.data.labels = labels;
         chart.data.datasets[0].data = values;
         chart.update();
+    }
+
+    let recent = values[values.length - 1];
+    if (recent != undefined) {
+        document.getElementById("currentTemp").innerHTML = "Current Temperature: " + recent + "&#8451";
+    }
+
+    if (data.length > 0) {
+        let status = document.getElementById("connectionStatus");
+        status.innerHTML = "Connected";
+        status.classList.remove("bg-danger");
+        status.classList.add("bg-success");
     }
 }
 

@@ -1,3 +1,3 @@
 async function setLEDMode(mode) {
-  const response = await fetch('/api/led/' + mode, {method: "POST"})
+  await fetch('/api/led/' + mode, {method: "POST"})
 }

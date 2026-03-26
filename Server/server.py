@@ -10,6 +10,7 @@ VALID_MODES = {'blink', 'linear', 'ease in', 'ease out', 'ease in out', 'rainbow
 LED_COUNT = 6 #update when breadboard is laid out
 
 sensor_history = []
+sensor_index = 0
 led_mode = "blink"
 
 ## DASHBOARD ##############################################
@@ -20,10 +21,17 @@ def hello_world():
 ## API ####################################################
 @app.route('/api/data', methods=['POST'])
 def receive_data():
-    sensor_history.append(request.json)
+    global sensor_index
+
+    data = request.json
+    data["label"] = sensor_index
+
+    sensor_history.append(data)
 
     if len(sensor_history) > MAX_SENSOR_STORAGE:
         sensor_history.pop(0)
+
+    sensor_index += 1
 
     return led_mode
 

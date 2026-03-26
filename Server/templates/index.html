@@ -12,9 +12,9 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 
-<body>
+<body class="bg-light">
   <header class="bg-dark text-white text-center py-3 mb-4">
-    <h1>Device Dashboard</h1>
+    <h1 class="my-0">Device Dashboard</h1>
   </header>
 
   <div class="container">
@@ -56,6 +56,7 @@
             <button class="btn btn-warning" onclick="setLEDMode('rainbow')">Rainbow</button>
             <button class="btn btn-danger" onclick="setLEDMode('flame')">Flame</button>
             <button class="btn btn-dark" onclick="setLEDMode('binary')">Binary</button>
+            <button class="btn btn-secondary" onclick="setLEDMode('temp')">Temperature</button>
             <button class="btn btn-outline-secondary" onclick="">Auto</button>
           </div>
         </div>
@@ -65,7 +66,7 @@
       <div class="col-md-6">
         <div class="card p-3 h-100">
           <h2 class="h5">Temperature Data</h2>
-
+          <p id="currentTemp">No Temperature Data</p>
           <div id="loadingSpinner" class="text-center m-auto">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
@@ -73,7 +74,7 @@
           </div>
 
           <div id="mainContent" style="display: none;">
-            <canvas id="temperatureChart" class="h-100 w-100"></canvas>
+            <canvas id="temperatureChart" class="h-100 w-100 bg-white"></canvas>
           </div>
         </div>
       </div>
