@@ -9,7 +9,7 @@ public:
   LEDController() = default;
 
   void initialise() {
-    for (int led = 0; led < 6; ++led) {
+    for (int led = 0; led < NUM_LEDS; ++led) {
       pinMode(LED_pins[led], OUTPUT);
     }
   }
