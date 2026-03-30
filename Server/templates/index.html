@@ -13,8 +13,10 @@
 </head>
 
 <body class="bg-light">
+  <!-- Header -->
   <header class="bg-dark text-white mb-3">
     <div class="container d-flex justify-content-between align-items-center py-2">
+
       <h1 class="m-0">Device Dashboard</h1>
 
       <div>
@@ -23,11 +25,24 @@
           Disconnected
         </span>
       </div>
+
     </div>
   </header>
-  
+
+  <!-- Preload Image States -->
+  <div style="display:none" aria-hidden="true">
+    <img id="preload-redOFF" src="{{ url_for('static', filename='images/redOFF.png') }}">
+    <img id="preload-redON" src="{{ url_for('static', filename='images/redON.png') }}">
+    <img id="preload-yellowOFF" src="{{ url_for('static', filename='images/yellowOFF.png') }}">
+    <img id="preload-yellowON" src="{{ url_for('static', filename='images/yellowON.png') }}">
+    <img id="preload-greenOFF" src="{{ url_for('static', filename='images/greenOFF.png') }}">
+    <img id="preload-greenON" src="{{ url_for('static', filename='images/greenON.png') }}">
+  </div>
+
+  <!-- Main Content -->
   <div class="container">
-    <div class="row g-2">
+    <div class="row g-2 mb-3">
+
       <!-- Temperature Graph -->
       <div class="col-lg-6">
         <div class="card p-3 h-100">
@@ -38,7 +53,7 @@
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
-  
+
           <div id="mainContent" style="display: none;">
             <div class="chart-container">
               <canvas id="temperatureChart"></canvas>
@@ -46,15 +61,21 @@
           </div>
         </div>
       </div>
-  
+
       <!-- LED Patterns -->
       <div class="col-lg-6">
         <div class="card p-3">
+
           <h2 class="h5">LED Patterns</h2>
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2"></div>
+
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-4"></div>
+
+            <!-- State Buttons -->
             <div class="row">
               <div class="d-flex flex-wrap gap-2">
+
                 <button class="btn btn-primary" onclick="setLEDMode('b')">Blink</button>
+
                 <div class="btn-group">
                   <button type="button" class="btn btn-success" onclick="setLEDMode('l')">Chase</button>
                   <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,26 +90,51 @@
                     <li><button class="dropdown-item" onclick="setLEDMode('x')">Ease in & out</button></li>
                   </ul>
                 </div>
+
                 <button class="btn btn-warning" onclick="setLEDMode('r')">Rainbow</button>
                 <button class="btn btn-danger" onclick="setLEDMode('f')">Flame</button>
                 <button class="btn btn-dark" onclick="setLEDMode('c')">Binary</button>
-                <button class="btn btn-secondary" onclick="setLEDMode('t')">Temperature</button>
-                <button class="btn btn-outline-secondary" onclick="customLEDMode()">Auto</button>
+                <button class="btn btn-secondary" onclick="setLEDMode('t')">Thermometer</button>
+                <button class="btn btn-outline-secondary" onclick="setLEDMode('m')">Manual</button>
               </div>
-              <div class="col">
-                <label for="delay"  id="delayValue" class="form-label pt-1 m-2">Delay: 500</label>
-                <input type="range" class="form-range" min="100" max="1000" value="500" id="delay" style="padding:1em">
-              </div>   
             </div>
+
+            <!-- Manual LED toggle -->
+            <div id="led-field" hidden>
+              <p class="form-label pt-1 m-2">Manual LED Layout</p>
+              <div class="led-row">
+                <img class="led" id="red-0" data-color="red" data-state="off" alt="LED">
+                <img class="led" id="red-1" data-color="red" data-state="off" alt="LED">
+                <img class="led" id="red-2" data-color="red" data-state="off" alt="LED">
+                <img class="led" id="red-3" data-color="red" data-state="off" alt="LED">
+
+                <img class="led" id="yellow-0" data-color="yellow" data-state="off" alt="LED">
+                <img class="led" id="yellow-1" data-color="yellow" data-state="off" alt="LED">
+                <img class="led" id="yellow-2" data-color="yellow" data-state="off" alt="LED">
+                <img class="led" id="yellow-3" data-color="yellow" data-state="off" alt="LED">
+
+                <img class="led" id="green-0" data-color="green" data-state="off" alt="LED">
+                <img class="led" id="green-1" data-color="green" data-state="off" alt="LED">
+                <img class="led" id="green-2" data-color="green" data-state="off" alt="LED">
+                <img class="led" id="green-3" data-color="green" data-state="off" alt="LED">
+              </div>
+            </div>
+
+            <!-- Delay Slider -->
+            <div class="col">
+              <label for="delay"  id="delayValue" class="form-label pt-1 m-2">Delay: 500</label>
+              <input type="range" class="form-range" min="100" max="1000" value="500" id="delay" style="padding:1em">
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url_for('static', filename='js/temperature-graph.js') }}"></script>
   <script src="{{ url_for('static', filename='js/led-modes.js') }}"></script>
 </body>
-
 </html>

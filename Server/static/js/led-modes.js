@@ -1,36 +1,79 @@
-let delay = 500;
-let mode = 'b';
+const LED_COUNT = 12;
 
-async function setLEDMode(new_mode) {
-  fetch('/api/led', {
+// Default Values
+let delay = 500;
+let mode = 'm';
+let pattern = 0;
+let ledStates = [];
+
+// HTML elements
+const DELAY_SLIDER = document.getElementById('delay');
+const LED_FIELD = document.getElementById('led-field');
+const DELAY_OUTPUT = document.getElementById('delayValue');
+
+// LED modes //////////////////////////////////////////////
+function setLEDMode(new_mode, new_pattern = null) {
+  manual_mode = mode == 'm';
+
+  // Pressing manual button again shouldn't clear existing pattern
+  if (manual_mode && new_mode == 'm' & new_pattern == pattern) return
+  
+  mode = new_mode;
+  if (new_pattern != null) {
+    pattern = new_pattern;
+  }
+
+  fetch('/api/led/', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      mode: new_mode,
+      mode: mode,
+      pattern: pattern,
       delay: delay
     })
   });
-  mode = new_mode;
-  console.log("Set to: " + mode + ";0;" + delay);
-
-  if (mode == 't' || mode == 'm') {
-    document.getElementById('delay').disabled = true;
-  } else {
-    document.getElementById('delay').removeAttribute('disabled');
-  }
+  
+  // Show appropriate content depending on mode
+  DELAY_SLIDER.hidden = manual_mode;
+  DELAY_OUTPUT.hidden = manual_mode;
+  LED_FIELD.hidden = !manual_mode;
 }
 
-const rangeInput = document.getElementById('delay');
-const rangeOutput = document.getElementById('delayValue');
-
-rangeInput.addEventListener('input', function() {
+// Delay Slider ///////////////////////////////////////////
+DELAY_SLIDER.addEventListener('input', function() {
   delay = this.value;
-  rangeOutput.textContent = "Delay: " + this.value;
+  DELAY_OUTPUT.textContent = "Delay: " + this.value;
 });
 
-rangeInput.addEventListener('change', function() {
-  delay = this.value;
+DELAY_SLIDER.addEventListener('change', function() {
   setLEDMode(mode);
 });
+
+// Manual LED mode ////////////////////////////////////////
+document.querySelectorAll('.led').forEach((led, index) => {
+  const color = led.dataset.color;
+  led.src = document.getElementById(`preload-${color}OFF`).src;
+
+  led.addEventListener('click', () => {
+    const isOff = led.dataset.state === 'off';
+    const state = isOff ? 'ON' : 'OFF';
+
+    ledStates[index] = isOff;
+    setLEDMode('m', statesToValue());
+
+    led.src = document.getElementById(`preload-${color}${state}`).src;
+    led.dataset.state = isOff ? 'on' : 'off';
+    led.classList.toggle(`on-${color}`, isOff);
+  });
+});
+
+function statesToValue() {
+  let value = 0;
+  ledStates.forEach((state, index) => {
+    let power = LED_COUNT - index - 1;
+    value += state * 2**power;
+  });
+  return value
+}

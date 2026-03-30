@@ -9,3 +9,36 @@
   aspect-ratio: 2 / 1; 
   margin: auto;
 }
+
+.led-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: center;
+}
+
+/* Break into 3 rows of 4 on narrow screens*/
+@media (max-width: 450px) {
+  .led-row {
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 8px;
+    justify-items: center;
+  }
+}
+
+.led {
+  max-width: 50px;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s ease, filter 0.1s ease;
+  display: block;
+}
+
+.led:hover { transform: scale(1.15); }
+.led:active { transform: scale(0.9); }
+
+/* Glow effect when ON */
+.led.on-red    { filter: drop-shadow(0 0 4px rgba(255, 60, 60, 0.85)); }
+.led.on-yellow { filter: drop-shadow(0 0 4px rgba(255, 220, 0, 0.85)); }
+.led.on-green  { filter: drop-shadow(0 0 4px rgba(60, 255, 80, 0.85)); }

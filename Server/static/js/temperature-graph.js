@@ -1,5 +1,8 @@
 let chart;
 
+let CURRENT_TEMP = document.getElementById("currentTemp");
+let CONNECTION_STATUS = document.getElementById("connectionStatus");
+
 async function fetchData() {
     const response = await fetch('/api/data');
     const data = await response.json();
@@ -9,6 +12,7 @@ async function fetchData() {
     const labels = filtered.map(d => d.label);
 
     if (!chart) {
+        // Create new graph on first load
         const ctx = document.getElementById('temperatureChart');
         chart = new Chart(ctx, {
             type: 'line',
@@ -22,38 +26,37 @@ async function fetchData() {
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        min: 0,
+                        max: 35,
                     }
                 },
                 animation: {
                     onComplete: function () {
-                    showContent();
+                        document.getElementById("loadingSpinner").style.display = "none";
+                        document.getElementById("mainContent").style.display = "block";
                     }
                 }
             }
         });
     } else {
+        // Update graph
         chart.data.labels = labels;
         chart.data.datasets[0].data = values;
         chart.update();
     }
 
+    // Update current temp value
     let recent = values[values.length - 1];
     if (recent != undefined) {
-        document.getElementById("currentTemp").innerHTML = "Current Temperature: " + recent + "&#8451";
+        CURRENT_TEMP.innerHTML = "Current Temperature: " + recent + "&#8451";
     }
 
-    if (data.length > 0) {
-        let status = document.getElementById("connectionStatus");
-        status.innerHTML = "Connected";
-        status.classList.remove("bg-danger");
-        status.classList.add("bg-success");
+    // Update connection status upon receiving data
+    if (data.length > 0 && CONNECTION_STATUS.innerHTML != "Connected") {
+        CONNECTION_STATUS.innerHTML = "Connected";
+        CONNECTION_STATUS.classList.remove("bg-danger");
+        CONNECTION_STATUS.classList.add("bg-success");
     }
 }
 
 setInterval(fetchData, 2000);
-
-function showContent() {
-    document.getElementById("loadingSpinner").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-}
