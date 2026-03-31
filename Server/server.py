@@ -5,7 +5,7 @@ from flask import Flask, jsonify, render_template, request
 app = Flask(__name__)
 
 ## GLOBAL #################################################
-MAX_SENSOR_STORAGE = 50
+MAX_SENSOR_STORAGE = 150
 VALID_MODES = {
     'b', # blink
     'w', # twinkle
@@ -21,7 +21,7 @@ VALID_MODES = {
 }
 
 ## DEFAULTS ###############################################
-led_mode = "m"
+led_mode = "b"
 led_delay = 500
 led_pattern = 0
 

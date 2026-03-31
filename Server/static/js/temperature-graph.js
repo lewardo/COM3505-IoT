@@ -27,7 +27,7 @@ async function fetchData() {
                 scales: {
                     y: {
                         min: 0,
-                        max: 35,
+                        suggestedMax: 30,
                     }
                 },
                 animation: {
@@ -48,12 +48,12 @@ async function fetchData() {
     // Update current temp value
     let recent = values[values.length - 1];
     if (recent != undefined) {
-        CURRENT_TEMP.innerHTML = "Current Temperature: " + recent + "&#8451";
+        CURRENT_TEMP.textContent = "Current Temperature: " + recent + "℃";
     }
 
     // Update connection status upon receiving data
-    if (data.length > 0 && CONNECTION_STATUS.innerHTML != "Connected") {
-        CONNECTION_STATUS.innerHTML = "Connected";
+    if (data.length > 0 && CONNECTION_STATUS.textContent != "Connected") {
+        CONNECTION_STATUS.textContent = "Connected";
         CONNECTION_STATUS.classList.remove("bg-danger");
         CONNECTION_STATUS.classList.add("bg-success");
     }

@@ -1,8 +1,21 @@
 const LED_COUNT = 12;
+const MODES_NAMES = {
+  'b': "Blink",
+  'w': "Twinkle",
+  'l': "Chase - Linear",
+  'i': "Chase - Ease In",
+  'o': "Chase - Ease Out",
+  'x': "Chase - Ease In-Out",
+  'r': "Rainbow",
+  'f': "Flame",
+  'c': "Binary Counter",
+  't': "Thermometer",
+  'm': "Manual Mode"
+}
 
 // Default Values
 let delay = 500;
-let mode = 'm';
+let mode = 'b';
 let pattern = 0;
 let ledStates = [];
 
@@ -10,6 +23,7 @@ let ledStates = [];
 const DELAY_SLIDER = document.getElementById('delay');
 const LED_FIELD = document.getElementById('led-field');
 const DELAY_OUTPUT = document.getElementById('delayValue');
+const CURRENT_MODE = document.getElementById('currentMode');
 
 // LED modes //////////////////////////////////////////////
 function setLEDMode(new_mode, new_pattern = null) {
@@ -35,6 +49,7 @@ function setLEDMode(new_mode, new_pattern = null) {
   });
   
   // Show appropriate content depending on mode
+  CURRENT_MODE.textContent = "Current LED Pattern: " + MODES_NAMES[mode];
   manual_mode = mode == 'm';
   DELAY_SLIDER.hidden = manual_mode;
   DELAY_OUTPUT.hidden = manual_mode;
