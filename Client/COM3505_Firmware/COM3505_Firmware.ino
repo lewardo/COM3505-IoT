@@ -44,23 +44,18 @@ void setup() {
   net_preferences.begin("network-creds", false);
 
   Serial.print("Enter network ssid: ");
-  while (Serial.available() == 0) {
-    delay(10);
-  }
+
+  for (int timeout = 1000; Serial.available() == 0 && timeout > 0; timeout--) delay(10);
   net_ssid = Serial.readStringUntil('\n');
   Serial.println(net_ssid);
 
   Serial.print("Enter network password: ");
-  while (Serial.available() == 0) {
-    delay(10);
-  };
+  for (int timeout = 1000; Serial.available() == 0 && timeout > 0; timeout--) delay(10);
   net_password = Serial.readStringUntil('\n');
   Serial.println(net_password);
 
   Serial.print("Enter server address: ");
-  while (Serial.available() == 0) {
-    delay(10);
-  };
+  for (int timeout = 1000; Serial.available() == 0 && timeout > 0; timeout--) delay(10);
   server_endpoint = Serial.readStringUntil('\n');
   Serial.println(server_endpoint);
   server_endpoint.trim();
