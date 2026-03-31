@@ -14,7 +14,7 @@ const DELAY_OUTPUT = document.getElementById('delayValue');
 // LED modes //////////////////////////////////////////////
 function setLEDMode(new_mode, new_pattern = null) {
   // Pressing manual button again shouldn't clear existing pattern
-  if (mode == 'm' && new_mode == 'm' & new_pattern == pattern) return
+  if (mode === 'm' && new_mode === 'm' & new_pattern === pattern) return
   
   // Otherwise update modes
   mode = new_mode;
@@ -57,14 +57,14 @@ document.querySelectorAll('.led').forEach((led, index) => {
   led.src = document.getElementById(`preload-${color}OFF`).src;
 
   led.addEventListener('click', () => {
-    const isOff = led.dataset.state === 'off';
-    const state = isOff ? 'ON' : 'OFF';
+    const isOff = led.dataset.state === 'OFF';
+    const new_state = isOff ? 'ON' : 'OFF';
 
     ledStates[index] = isOff;
     setLEDMode('m', statesToValue());
 
-    led.src = document.getElementById(`preload-${color}${state}`).src;
-    led.dataset.state = isOff ? 'on' : 'off';
+    led.src = document.getElementById(`preload-${color}${new_state}`).src;
+    led.dataset.state = new_state;
     led.classList.toggle(`on-${color}`, isOff);
   });
 });
