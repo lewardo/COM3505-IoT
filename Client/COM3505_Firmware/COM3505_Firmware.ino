@@ -17,7 +17,7 @@ uint32_t previous_post = 0;
 uint32_t post_interval = 1000;
 
 float temperature_val = 0;
-char led_mode = 'b';
+char led_mode = '.';
 uint32_t led_set = 0, led_delay = 1000;
 
 void PostCallback(TimerHandle_t) {
@@ -35,6 +35,9 @@ void PostCallback(TimerHandle_t) {
   Easings.updateDelay(led_delay);
 
   http.end();
+
+  Serial.print("Posted temperature to ");
+  Serial.println(server_endpoint);
 }
 
 void setup() {
@@ -61,7 +64,7 @@ void setup() {
   server_endpoint.trim();
   server_endpoint = String("http://") + server_endpoint + String(":5000/api/data");
 
-  if (net_ssid.length() > 1 && net_password.length() >= 8) {
+  if (net_ssid.length() > 2 && net_password.length() >= 8) {
     Serial.println("Saving network creds");
     net_preferences.putString("ssid", net_ssid.c_str());
     net_preferences.putString("pass", net_password.c_str());
@@ -84,7 +87,7 @@ void setup() {
     Serial.print(".");
     delay(100);
   };
-  Serial.println("\nConnection esablished.");
+  Serial.println("\nConnection esablished, current ip");
 
   xTimerStart(xTimerCreate(
     "PostTimer",
