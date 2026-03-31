@@ -1,13 +1,17 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <Preferences.h>
 
 #include "Easings.h"
 #include "Leds.h"
 #include "Sensor.h"
 
-const char* net_ssid = "VM2685D8";
-const char* net_password = "2pJejmkganFu";
-const char* server_endpoint = "http://192.168.0.37:5000/api/data";
+// const char* default_net_ssid = "thing";
+// const char* default_net_password = "password";
+// const char* default_server_endpoint = "http://10.61.23.177:5000/api/data";
+
+String net_ssid, net_password, server_endpoint;
+Preferences net_preferences;
 
 uint32_t previous_post = 0;
 uint32_t post_interval = 1000;
@@ -20,10 +24,11 @@ void PostCallback(TimerHandle_t) {
   WiFiClient client;
   HTTPClient http;
 
-  http.begin(client, server_endpoint);
+  http.begin(client, server_endpoint.c_str());
   http.addHeader("Content-Type", "application/json");
 
-  String post_payload = String("{\"temperature\":\"") + String(Temp.readValue(), 1) + String("\"}");
+  temperature_val = Temp.readValue();
+  String post_payload = String("{\"temperature\":\"") + String(temperature_val, 1) + String("\"}");
   int response_code = http.POST(post_payload);
 
   sscanf(http.getString().c_str(), "%c;%d;%d", &led_mode, &led_set, &led_delay);
@@ -33,10 +38,45 @@ void PostCallback(TimerHandle_t) {
 }
 
 void setup() {
+  delay(1000);
   Serial.println("=== COM3505 IoT ESP32-S3 Firmware ===");
 
+  net_preferences.begin("network-creds", false);
+
+  Serial.println("Enter network ssid");
+  while (Serial.available() == 0) {
+    delay(10);
+  }
+  net_ssid = Serial.readStringUntil('\n');
+
+  Serial.println("Enter network password");
+  while (Serial.available() == 0) {
+    delay(10);
+  };
+  net_password = Serial.readStringUntil('\n');
+
+  Serial.println("Enter server address");
+  while (Serial.available() == 0) {
+    delay(10);
+  };
+  server_endpoint = Serial.readStringUntil('\n');
+  server_endpoint.trim();
+  server_endpoint = String("http://") + server_endpoint + String(":5000/api/data");
+
+  if (net_ssid.length() > 1 && net_password.length() >= 8) {
+    Serial.println("Saving network creds");
+    net_preferences.putString("ssid", net_ssid.c_str());
+    net_preferences.putString("pass", net_password.c_str());
+    net_preferences.putString("ip", server_endpoint.c_str());
+  } else {
+    Serial.println("Defaultingto previous creds");
+    net_ssid = net_preferences.getString("ssid", String("default_ssid"));
+    net_password = net_preferences.getString("pass", String("default_pass"));
+    server_endpoint = net_preferences.getString("ip", String("http://127.0.0.1:5000/api/data"));
+  }
+
   Serial.begin(115200);
-  WiFi.begin(net_ssid, net_password);
+  WiFi.begin(net_ssid.c_str(), net_password.c_str());
 
   LEDs.initialise();
   Temp.initialise();
