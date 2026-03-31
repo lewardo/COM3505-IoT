@@ -8,6 +8,7 @@ app = Flask(__name__)
 MAX_SENSOR_STORAGE = 50
 VALID_MODES = {
     'b', # blink
+    'w', # twinkle
     'l', # linear
     'i', # ease in
     'o', # ease out
