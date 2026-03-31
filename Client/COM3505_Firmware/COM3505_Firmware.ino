@@ -141,7 +141,6 @@ void loop() {
       if (progress > led_delay / 2.0f) LEDs.writeAll(2730);
       else LEDs.writeAll(1365);
       break;
-      break;
 
     case 'm':
       LEDs.writeAll(led_set);
