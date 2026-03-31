@@ -43,23 +43,26 @@ void setup() {
 
   net_preferences.begin("network-creds", false);
 
-  Serial.println("Enter network ssid");
+  Serial.print("Enter network ssid: ");
   while (Serial.available() == 0) {
     delay(10);
   }
   net_ssid = Serial.readStringUntil('\n');
+  Serial.print(net_ssid);
 
-  Serial.println("Enter network password");
+  Serial.print("Enter network password: ");
   while (Serial.available() == 0) {
     delay(10);
   };
   net_password = Serial.readStringUntil('\n');
+  Serial.print(net_password);
 
-  Serial.println("Enter server address");
+  Serial.print("Enter server address: ");
   while (Serial.available() == 0) {
     delay(10);
   };
   server_endpoint = Serial.readStringUntil('\n');
+  Serial.print(server_endpoint);
   server_endpoint.trim();
   server_endpoint = String("http://") + server_endpoint + String(":5000/api/data");
 
