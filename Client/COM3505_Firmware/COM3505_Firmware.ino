@@ -137,6 +137,12 @@ void loop() {
       LEDs.showScale((temperature_val - 15));
       break;
 
+    case 'w':
+      if (progress > led_delay / 2.0f) LEDs.writeAll(2730);
+      else LEDs.writeAll(1365);
+      break;
+      break;
+
     case 'm':
       LEDs.writeAll(led_set);
       break;
