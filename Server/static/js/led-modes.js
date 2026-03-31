@@ -13,16 +13,15 @@ const DELAY_OUTPUT = document.getElementById('delayValue');
 
 // LED modes //////////////////////////////////////////////
 function setLEDMode(new_mode, new_pattern = null) {
-  manual_mode = mode == 'm';
-
   // Pressing manual button again shouldn't clear existing pattern
-  if (manual_mode && new_mode == 'm' & new_pattern == pattern) return
+  if (mode == 'm' && new_mode == 'm' & new_pattern == pattern) return
   
+  // Otherwise update modes
   mode = new_mode;
   if (new_pattern != null) {
     pattern = new_pattern;
   }
-
+  
   fetch('/api/led/', {
     method: "POST",
     headers: {
@@ -36,6 +35,7 @@ function setLEDMode(new_mode, new_pattern = null) {
   });
   
   // Show appropriate content depending on mode
+  manual_mode = mode == 'm';
   DELAY_SLIDER.hidden = manual_mode;
   DELAY_OUTPUT.hidden = manual_mode;
   LED_FIELD.hidden = !manual_mode;
