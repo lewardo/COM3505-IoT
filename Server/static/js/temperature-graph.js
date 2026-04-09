@@ -28,10 +28,20 @@ async function fetchData() {
                     y: {
                         min: 0,
                         suggestedMax: 30,
+                        title: {
+                            display: true,
+                            text: 'Temperature'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Reading'
+                        }
                     }
                 },
                 animation: {
-                    onComplete: function () {
+                    onComplete: function() {
                         document.getElementById("loadingSpinner").style.display = "none";
                         document.getElementById("mainContent").style.display = "block";
                     }
