@@ -15,7 +15,7 @@ public:
   }
 
   void writeSingle(int led, bool value) {
-    LED_states &= ~(value << led);
+    LED_states &= ~((int) !value << led);
     LED_states |= value << led;
     digitalWrite(LED_pins[led], value);
   }
@@ -79,10 +79,10 @@ public:
       // else LED_states |= 1 << led;
       //
       // LED_states[led] = led < value;
-      LED_states |= 1 << set;
+      LED_states |= 1 << led;
     }
     for (int led = value; led < NUM_LEDS; ++led) {
-      LED_states &= ~(1 << set);
+      LED_states &= ~(1 << led);
     }
 
     updateAll();
@@ -91,7 +91,9 @@ public:
   void highlightGroup(int group) {
     resetAll();
 
-    for (int led = group * LED_group_counts; led < (group + 1) * LED_group_counts; ++led) {
+    int first_led = group * LED_group_counts
+    int last_led = ++group * LED_group_counts;
+    for (int led = first_led; led < last_led; ++led) {
       setSingle(led);
     };
 
