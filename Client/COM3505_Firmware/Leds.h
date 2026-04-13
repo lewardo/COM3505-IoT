@@ -48,7 +48,7 @@ public:
     // for (int led = 0; led < NUM_LEDS; ++led) {
     //   LED_states |= 1 << led;
     // }
-    LED_states = 1 << NUM_LEDS - 1;
+    LED_states = (1 << NUM_LEDS) - 1;
 
     updateAll();
   }
@@ -91,7 +91,7 @@ public:
   void highlightGroup(int group) {
     resetAll();
 
-    int first_led = group * LED_group_counts
+    int first_led = group * LED_group_counts;
     int last_led = ++group * LED_group_counts;
     for (int led = first_led; led < last_led; ++led) {
       setSingle(led);
@@ -116,7 +116,7 @@ private:
 
   void updateAll() {
     for (int led = 0; led < NUM_LEDS; ++led) {
-      digitalWrite(LED_pins[led], LED_states & (1 << led));
+      digitalWrite(LED_pins[led], (bool) (LED_states & (1 << led)));
     }
   }
 } LEDs;
