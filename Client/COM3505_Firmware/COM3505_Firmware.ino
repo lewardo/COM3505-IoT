@@ -64,13 +64,13 @@ void setup() {
   server_endpoint.trim();
   server_endpoint = String("http://") + server_endpoint + String(":5000/api/data");
 
-  if (net_ssid.length() > 2 && net_password.length() >= 8) {
+  if (net_ssid.length() > 2 && net_password.length() >= 8 && server_endpoint.length() > 21) {
     Serial.println("Saving network creds");
     net_preferences.putString("ssid", net_ssid.c_str());
     net_preferences.putString("pass", net_password.c_str());
     net_preferences.putString("ip", server_endpoint.c_str());
   } else {
-    Serial.println("Defaultingto previous creds");
+    Serial.println("Defaulting to previous creds");
     net_ssid = net_preferences.getString("ssid", String("default_ssid"));
     net_password = net_preferences.getString("pass", String("default_pass"));
     server_endpoint = net_preferences.getString("ip", String("http://127.0.0.1:5000/api/data"));
@@ -87,7 +87,9 @@ void setup() {
     Serial.print(".");
     delay(100);
   };
-  Serial.println("\nConnection esablished, current ip");
+
+  Serial.print("\nConnection esablished, current ip ");
+  Serial.println(WiFi.localIP());
 
   xTimerStart(xTimerCreate(
     "PostTimer",
