@@ -4,7 +4,17 @@
 <!-- Maybe a picture of the board too -->
 
 ## Client
-<!-- TODO: Layout, Setup -->
+### Layout
+![Circuit Diagram](./Client/assets/circuit.png)
+Wire your circuit on an breadboard according to the circuit diagram above.
+
+Add the Adafruit ESP32 board package to the Arduino IDE. Find the preferences menu in the IDE and add `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json` to the list of "Additional Board Manager URLs".
+
+Then install the ESP32 board support package from the board manager, and select an ESP32-S3 feather from the board list.
+
+Use the Arduino IDE to upload the [firmware](./Client/COM3505_Firmware/COM3505_Firmware.ino) to an ESP32-S3 Feather.
+
+Using the inbuilt serial monitor, provision the WiFi credentials and server IP address when prompted.
 
 ## Server
 ### Setup
