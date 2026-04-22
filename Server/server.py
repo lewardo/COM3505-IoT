@@ -48,11 +48,15 @@ def receive_data():
 
     # Data validation
     if 'temperature' not in data:
-        return "Bad Request: 'temperature' value must be a number", 400
+        return "Bad Request: Missing 'temperature' value", 400
+    
+    try:
+        data['temperature'] = float(data['temperature'])
+    except:
+        return "Bad Request: 'temperature' value must be numeric"
     
     extra_fields = [key for key in data if key != 'temperature'] 
     if len(extra_fields) > 0:
-        print("2")
         return "Bad Request: Unrecognised value(s): " + ", ".join(extra_fields), 400
 
     # Add x-axis 'label' to temp value for graph
@@ -60,7 +64,7 @@ def receive_data():
     data['label'] = sensor_data_label
     sensor_data_label += 1
 
-    # Update sensor sistory
+    # Update sensor history
     sensor_history.append(data)
     if len(sensor_history) > MAX_SENSOR_STORAGE:
         sensor_history.pop(0)
