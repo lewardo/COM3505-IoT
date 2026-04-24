@@ -1,7 +1,6 @@
 # COM3505-IOT Assignment
 ![The Dashboard](./Server/static/images/dashboard.png)
-<!-- ^ Crunchy image -->
-<!-- Maybe a picture of the board too -->
+![The ESP Layout](./Client/assets/board.jpg)
 
 ## Client
 ### Layout
