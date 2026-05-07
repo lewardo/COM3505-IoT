@@ -27,6 +27,12 @@ const DELAY_OUTPUT = document.getElementById('delayValue');
 const CURRENT_MODE = document.getElementById('currentMode');
 
 // LED modes //////////////////////////////////////////////
+/**
+ * POSTs the new LED command to the Flask Server.
+ *
+ * @param {string} new_mode  The new led mode.
+ * @param {number} new_pattern The new manual pattern.
+ */
 function setLEDMode(new_mode, new_pattern = null) {
     // Pressing manual button repeatedly shouldn't clear existing pattern
     if (mode === 'm' && new_mode === 'm' & new_pattern === pattern) return
@@ -86,7 +92,9 @@ document.querySelectorAll('.led').forEach((led, index) => {
     });
 });
 
-// Convert the ledStates array into an integer representation value
+/**
+* Convert the ledStates array into an integer representation value
+*/
 function statesToValue() {
     let value = 0;
     ledStates.forEach((state, index) => {

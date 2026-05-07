@@ -1,20 +1,27 @@
+// Constants //////////////////////////////////////////////
+const CURRENT_TEMP = document.getElementById("currentTemp");
+const CONNECTION_STATUS = document.getElementById("connectionStatus");
+const CTX = document.getElementById('temperatureChart');
+
+// Default Values /////////////////////////////////////////
 let chart;
 
-let CURRENT_TEMP = document.getElementById("currentTemp");
-let CONNECTION_STATUS = document.getElementById("connectionStatus");
-
+// Temperature Graph //////////////////////////////////////
+/**
+ * Fetches the newest temperature data from the Flask server.
+ */
 async function fetchData() {
     const response = await fetch('/api/data');
     const data = await response.json();
 
+    // Filter data to only labelled temperature values
     const filtered = data.filter(d => d.temperature !== undefined);
     const values = filtered.map(d => d.temperature);
     const labels = filtered.map(d => d.label);
 
     if (!chart) {
         // Create new graph on first load
-        const ctx = document.getElementById('temperatureChart');
-        chart = new Chart(ctx, {
+        chart = new Chart(CTX, {
             type: 'line',
             data: {
                 labels: labels,
@@ -48,20 +55,21 @@ async function fetchData() {
                 }
             }
         });
+
     } else {
-        // Update graph
+        // Update graph on subsequent calls
         chart.data.labels = labels;
         chart.data.datasets[0].data = values;
         chart.update();
     }
 
-    // Update current temp value
+    // Update on-screen temperature value
     let recent = values[values.length - 1];
     if (recent != undefined) {
         CURRENT_TEMP.textContent = "Current Temperature: " + recent + "℃";
     }
 
-    // Update connection status upon receiving data
+    // Update on-screen connection status upon receiving data
     if (data.length > 0 && CONNECTION_STATUS.textContent != "Connected") {
         CONNECTION_STATUS.textContent = "Connected";
         CONNECTION_STATUS.classList.remove("bg-danger");
@@ -69,4 +77,5 @@ async function fetchData() {
     }
 }
 
+// Request new data every 2 seconds
 setInterval(fetchData, 2000);
