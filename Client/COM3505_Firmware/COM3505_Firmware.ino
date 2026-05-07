@@ -59,6 +59,7 @@ void PostCallback(TimerHandle_t) {
  */
 void setup() {
   delay(1000);
+  Serial.begin(115200);
   Serial.println("=== COM3505 IoT ESP32-S3 Firmware ===");
 
   net_preferences.begin("network-creds", false);
@@ -107,11 +108,10 @@ void setup() {
   }
 
   // Initialise Serial, WiFi, and the custom Driver objects
-  Serial.begin(115200);
   WiFi.begin(net_ssid.c_str(), net_password.c_str());
 
   LEDs.initialise();
-  Temp.initialise(NUM_LEDS);
+  Temp.initialise();
 
   // Wait for a connection
   Serial.println("Initalised WiFi, LEDs, and sensors. Waiting on connection");
